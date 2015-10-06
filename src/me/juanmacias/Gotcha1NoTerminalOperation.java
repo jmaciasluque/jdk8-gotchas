@@ -11,11 +11,14 @@ public class Gotcha1NoTerminalOperation {
 
         List<String> eulogy = Arrays.asList("yo", "quiero", "ser", "llorando", "el", "hortelano");
 
-        Stream<String> eulogyStream = eulogy.stream().filter( word -> {
-            System.out.println(word);
+        Stream<String> eulogyStream = eulogy.stream().filter(word -> {
+            System.out.println("while filtering (intermediate operation)... " + word);
             return word.contains("a");
+        }).map(word -> {
+            System.out.println("while uppercasing (intermediate operation)... " + word);
+            return word.toUpperCase();
         });
 
-//        System.out.println(eulogyStream.count() + " words contain the letter a");
+//        eulogyStream.peek(word -> System.out.println("peeking before counting (terminal operation)... " + word)).count();
     }
 }
