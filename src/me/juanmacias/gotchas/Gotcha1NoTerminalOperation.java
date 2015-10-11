@@ -1,4 +1,4 @@
-package me.juanmacias;
+package me.juanmacias.gotchas;
 
 import java.util.Arrays;
 import java.util.List;
