@@ -1,76 +1,73 @@
 package me.juanmacias.optionals;
 
-
+import me.juanmacias.utils.Printer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalDouble;
-import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
-public class Optionals {
+
+public class Optionals extends Printer {
 
     public static void main(String[] args) {
 
-        Stream<String> streams = Stream.of("java","Exam","Oracle");
-        Optional<String> ops = streams.findFirst().flatMap(s->Optional.of("A"));
-        System.out.println("Stream.of(\"java\",\"Exam\",\"Oracle\").findFirst().flatMap(s->Optional.of(\"A\")) ===> " + ops);
+        Optional optional1 = Optional.empty();
+        println("Optional.empty() ==> " + optional1);
+        println("Optional.empty().isPresent() ==> throws NoSuchElementException");
+        println("Optional.empty().equals(null) ==> " + optional1.equals(null));
+        println("Optional.empty().get() ==> throws NoSuchElementException");
+        optional1.ifPresent(o -> System.out.print("print if present"));
+        println("Optional.empty().ifPresent(o -> {System.out.print(\"print if present\");});");
+        println("Optional.empty().orElse(\"orElseElement\") ==> " + optional1.orElse("orElseElement"));
+        println("Optional.empty().orElseGet(() -> \"orElseGetElement\") ==> " + optional1.orElseGet(() -> "orElseGetElement"));
+        println("Optional.empty().orElseThrow(() -> new RuntimeException(\"orElseThrow exception\")) ==> compilation unhandled exception error!");
+        println("Optional.empty().map(i -> {println(\"mapping\");return \"mappedValue\";}) ==> " + optional1.map(i -> {println("mapping");return "mappedValue";}));
 
-        /* To create an empty optional we have to invoke the 'empty' method so option A is correct.
-               public static <T> Optional<T> empty()
-           This returns an empty Optional instance. No value is present for this Optional. */
-        Optional<String> ops2 = Optional.empty();
+        Optional optional2 = Optional.of("aString");
+        println("\nOptional.of(null) ==> throws NullPointerException");
+        println("Optional.of(\"aString\") ==> " + optional2);
+        println("Optional.of(\"aString\").isPresent() ==> " + optional2.isPresent());
+        println("Optional.of(\"aString\").equals(null) ==> " + optional2.equals(null));
+        println("Optional.of(\"aString\").equals(\"aString\") ==> " + optional2.equals("aString"));
+        println("Optional.of(\"aString\").equals(Optional.of(\"aString\")) ==> " + optional2.equals(Optional.of("aString")));
+        println("Optional.of(\"aString\").get() ==> " + optional2.get());
+        optional2.ifPresent(o -> System.out.print("print if present -> "));
+        println("Optional.of(\"aString\").ifPresent(o -> {System.out.print(\"print if present\");});");
+        println("Optional.of(\"aString\").orElse(\"orElseElement\") ==> " + optional2.orElse("orElseElement"));
+        println("Optional.of(\"aString\").orElseGet(() -> \"orElseGetElement\") ==> " + optional2.orElseGet(() -> "orElseGetElement"));
+        println("Optional.of(\"aString\").orElseThrow(() -> new RuntimeException(\"orElseThrow exception\")) ==> compilation unhandled exception error!");
+        println("Optional.of(\"aString\").map(i -> {println(\"mapping\");return \"mappedValue\";}) ==> " + optional2.map(i -> {print("mapping -> ");return "mappedValue";}));
+        println("Optional.of(\"aString\").map(i -> {println(\"mapping\");return \"mappedValue\";}).get() ==> " + optional2.map(i -> {print("mapping -> ");return "mappedValue";}).get());
 
-        IntStream ints = IntStream.of(3,4,5,6);
-//        Optional<Double> avgInts = ints.average();   ===> Compilation error
-        OptionalDouble avgInts = ints.average();
-        System.out.println(avgInts);
+        Optional optional3 = Optional.ofNullable("aString");
+        println("\nOptional.ofNullable(null) ==> " + Optional.ofNullable(null));
+        println("Optional.ofNullable(\"aString\") ==> " + optional3);
+        println("Optional.ofNullable(\"aString\").isPresent() ==> " + optional3.isPresent());
+        println("Optional.ofNullable(\"aString\").equals(null) ==> " + optional3.equals(null));
+        println("Optional.ofNullable(\"aString\").equals(\"aString\") ==> " + optional3.equals("aString"));
+        println("Optional.ofNullable(\"aString\").equals(Optional.ofNullable(\"aString\")) ==> " + optional3.equals(Optional.ofNullable("aString")));
+        println("Optional.ofNullable(\"aString\").get() ==> " + optional3.get());
+        optional3.ifPresent(o -> System.out.print("print if present -> "));
+        println("Optional.ofNullable(\"aString\").ifPresent(o -> {System.out.print(\"print if present\");});");
+        println("Optional.ofNullable(\"aString\").orElse(\"orElseElement\") ==> " + optional3.orElse("orElseElement"));
+        println("Optional.ofNullable(\"aString\").orElseGet(() -> \"orElseGetElement\") ==> " + optional3.orElseGet(() -> "orElseGetElement"));
+        println("Optional.ofNullable(\"aString\").orElseThrow(() -> new RuntimeException(\"orElseThrow exception\")) ==> compilation unhandled exception error!");
+        println("Optional.ofNullable(\"aString\").map(i -> {println(\"mapping\");return \"mappedValue\";}) ==> " + optional3.map(i -> {print("mapping -> ");return "mappedValue";}));
+        println("Optional.ofNullable(\"aString\").map(i -> {println(\"mapping\");return \"mappedValue\";}).get() ==> " + optional3.map(i -> {print("mapping -> ");return "mappedValue";}).get());
 
-        LongStream longs = LongStream.of(3L,4L,5L,6L);
-//        Optional<Double> avgLongs = longs.average();   ===> Compilation error
-        OptionalDouble avgLongs = longs.average();
-        System.out.println(avgLongs);
-
-        List<Integer> ints2 = new ArrayList<>();
-        ints2.add(1);
-        ints2.add(2);
-        ints2.add(3);
-        ints2.add(4);
-        Optional<Integer> op1 = Optional.of(ints2.get(2));
-        op1.ifPresent(in -> System.out.println(in*2));
-
-        String[] in = new String[3];
-//        String op2 = Optional.of(in[2]).orElse("Empty"); ==> Null pointer exception
-//        System.out.println(op2);
-        String op3 = Optional.ofNullable(in[2]).orElse("Empty");
-        System.out.println(op3);
-        Optional<String> op4 = Optional.ofNullable(in[2]);
-        System.out.println(op4);
+        Stream<String> streams = Stream.of("a","random","stream");
+        Optional<String> optional4 = streams.findFirst().flatMap(s -> Optional.of("A"));
+        println("\nStream.of(\"a\",\"random\",\"stream\").findFirst().flatMap(s -> Optional.of(\"A\")) ===> " + optional4);
 
         List<String> strings = new ArrayList<>();
-        strings.add("Shane");
+        strings.add("One");
         strings.add(null);
-        strings.add("Rachel");
-        strings.add("Raj");
-        Optional<String> op11 = Optional.ofNullable(strings.get(2));
-        Optional<String> op21 = Optional.ofNullable(strings.get(1));
-        System.out.println(op11.get());
-        System.out.println(op21.get());
-
-        DoubleStream stream = DoubleStream.of(1.1,2.2,3.3,4.4,5.5);
-        Stream<Double> dbs = stream.boxed();
-//        Optional<Double> any = dbs.findFirst(d -> d > 1.5);    findFirst() takes NO arguments
-//        System.out.println(any);
-
-        List<Integer> ints3 = new ArrayList<>();
-        ints3.add(1);
-        ints3.add(2);
-        ints3.add(3);
-        ints3.add(4);
-//        Optional<Integer> op5 = Optional.of(ints3.get(2)).orElse(0);   ===> Compilation error!
-//        op1.ifPresent(in -> System.out.println(in*2));
+        strings.add("Three");
+        strings.add("Four");
+        println("\nstrings ==> " + strings);
+        println("Optional.ofNullable(strings.get(0)) ==> " + Optional.ofNullable(strings.get(0)));
+        println("Optional.ofNullable(strings.get(1)) ==> " + Optional.ofNullable(strings.get(1)));
+        println("Optional.ofNullable(strings.get(0)).get() ==> " + Optional.ofNullable(strings.get(0)).get());
+        println("Optional.ofNullable(strings.get(1)).get() ==> throws NoSuchElementException");
     }
-
 }
