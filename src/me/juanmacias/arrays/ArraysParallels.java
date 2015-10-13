@@ -87,5 +87,7 @@ public class ArraysParallels extends Printer {
 
         println("\n * Other primitive versions: byte[], char[], double[], float[], int[], short[]");
         println(" * Other version: T[], which also offers the chance of specifying a Comparator, always last parameter, with or without a range specified!");
+
+        println("\n * Spliterator: based on this http://stackoverflow.com/a/19235863/649870, I'm ditching examples on this");
     }
 }
